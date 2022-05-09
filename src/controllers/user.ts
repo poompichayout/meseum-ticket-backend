@@ -6,19 +6,24 @@ import dotenv from 'dotenv';
 dotenv.config()
 const SECRET: string = process.env.SECRET!;
 
-import User from 'app/models/UserModel';
+import User from '../database/models/UserModel';
 
 export const signin = async (req: Request, res: Response) => {
 	const { email, password } = req.body;
 
 	try {
+        // check null first
+        if (!email || !password) {
+            return res.status(400).json({ message: "Please send every data!" });
+        }
+
 		const existingUser = await User.findOne({ email })
 
         if(!existingUser) return res.status(404).json({ message: "User doesn't exist" })
 
         const isPasswordCorrect  = await bcrypt.compare(password, existingUser.password)
 
-        if(!isPasswordCorrect) return res.status(400).json({message: "Invalid credentials"})
+        if(!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentials" })
 
         //If crednetials are valid, create a token for the user
         const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, SECRET, { expiresIn: "1h" })
@@ -34,6 +39,12 @@ export const signup = async (req: Request, res: Response)=> {
     const { email, password, confirmPassword, firstName, lastName, phone } = req.body
 
     try {
+
+        // check null first
+        if (!email || !password || !confirmPassword || !firstName || !lastName) {
+            return res.status(400).json({ message: "Please send every data!" });
+        }
+
         const existingUser = await User.findOne({ email })
 
         if(existingUser) return res.status(400).json({ message: "User already exist" })
@@ -49,6 +60,6 @@ export const signup = async (req: Request, res: Response)=> {
         res.status(200).json({ result, token })
 
     } catch (error) {
-        res.status(500).json({ message: "Something went wrong"}) 
+        res.status(500).json({ message: "Something went wrong"+error }) 
     }
 }

@@ -1,7 +1,7 @@
 import { Schema, model, Types } from "mongoose";
 
 // 1. Create an interface representing a document in MongoDB.
-interface ICustomer {
+export interface ICustomer {
 	customer_id: string,
 	user_id: Types.ObjectId;
 }

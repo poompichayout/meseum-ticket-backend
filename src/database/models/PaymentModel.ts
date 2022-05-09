@@ -1,12 +1,12 @@
-import { Schema, model, Types } from "mongoose";
+import { Schema, model } from "mongoose";
 
-enum PaymentMethod {
-	Visa = 'Visa',
-	PromptPay = 'Promptpay'
+export enum PaymentMethod {
+	VISA = 'Visa',
+	PROMPTPAY = 'Promptpay'
 }
 
 // 1. Create an interface representing a document in MongoDB.
-interface IPayment {
+export interface IPayment {
 	payment_id: string;
 	cost: number;
 	payment_method: PaymentMethod;
