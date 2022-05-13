@@ -4,6 +4,7 @@ dotenv.config();
 // Mapper for environment variables
 export const environment = process.env.NODE_ENV;
 export const port = process.env.PORT;
+export const SECRET: string = process.env.SECRET!;
 
 export const dbUrl = process.env.DB_URL;
 

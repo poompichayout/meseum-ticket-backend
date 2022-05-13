@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import Logger from '../core/Logger';
 import { db, dbUrl } from '../config';
+import Role, { RoleCode } from './models/Role';
 
 // Build the connection string
 const dbURI = dbUrl ?? `mongodb://${db.user}:${encodeURIComponent(db.password)}@${db.host}:${db.port}/${
@@ -20,7 +21,15 @@ Logger.debug(dbURI);
 // Create the database connection
 mongoose
   .connect(dbURI, options)
-  .then(() => {
+  .then(async () => {
+    const initUser = await Role.findOne({ code: RoleCode.ADMIN });
+		if(!initUser) {
+			Role.insertMany([
+        { code: 'ADMIN', status: true },
+        { code: 'USER', status: true },
+      ])
+		}
+    
     Logger.info('Mongoose connection done');
   })
   .catch((e) => {

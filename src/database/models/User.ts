@@ -1,10 +1,11 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 import { IRole } from './Role';
 
 export const DOCUMENT_NAME = 'User';
 export const COLLECTION_NAME = 'users';
 
 export interface IUser {
+	_id: Types.ObjectId,
 	email: string;
 	firstname: string;
 	lastname: string;

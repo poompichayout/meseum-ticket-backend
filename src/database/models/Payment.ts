@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 
 export const DOCUMENT_NAME = 'Payment';
 
@@ -8,6 +8,7 @@ export enum PaymentMethod {
 }
 
 export interface IPayment {
+	_id: Types.ObjectId,
 	payment_id: string;
 	cost: number;
 	payment_method: PaymentMethod;

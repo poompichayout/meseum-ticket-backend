@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 
 export const DOCUMENT_NAME = 'BookingTicket';
 
@@ -7,6 +7,7 @@ export enum TicketPrice {
 }
 
 export interface IBookingTicket {
+	_id: Types.ObjectId,
 	ticket_id: string;
 	amount: number;
 	price: TicketPrice;

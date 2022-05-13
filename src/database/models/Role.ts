@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Types } from 'mongoose';
 
 export const DOCUMENT_NAME = 'Role';
 
@@ -8,6 +8,7 @@ export const enum RoleCode {
 }
 
 export interface IRole {
+  _id: Types.ObjectId,
   code: string;
   status?: boolean;
 }
