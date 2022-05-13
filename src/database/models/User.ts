@@ -1,24 +1,36 @@
 import { Schema, model } from "mongoose";
+import { IRole } from './Role';
 
-// 1. Create an interface representing a document in MongoDB.
+export const DOCUMENT_NAME = 'User';
+export const COLLECTION_NAME = 'users';
+
 export interface IUser {
 	email: string;
 	firstname: string;
 	lastname: string;
 	password: string;
 	phone?: string;
+	roles: IRole[];
 }
 
-// 2. Create a Schema corresponding to the document interface.
 const UserSchema = new Schema<IUser>({
 	email: { type: String, required: true, unique: true },
 	firstname: { type: String, required: true },
 	lastname: { type: String, required: true },
 	password: { type: String, required: true },
 	phone: { type: String },
+	roles: {
+	type: [
+		{
+		type: Schema.Types.ObjectId,
+		ref: 'Role',
+		},
+	],
+	required: true,
+	select: false,
+	},
 })
 
-// 3. Create a Model.
-const User = model<IUser>('User', UserSchema);
+const User = model<IUser>(DOCUMENT_NAME, UserSchema, COLLECTION_NAME);
 
 export default User;

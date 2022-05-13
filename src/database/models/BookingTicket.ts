@@ -1,22 +1,25 @@
 import { Schema, model } from "mongoose";
 
-// 1. Create an interface representing a document in MongoDB.
+export const DOCUMENT_NAME = 'BookingTicket';
+
+export enum TicketPrice {
+	P150 = 150,
+}
+
 export interface IBookingTicket {
 	ticket_id: string;
 	amount: number;
-	price: number;
+	price: TicketPrice;
 	datetime: Date;
 }
 
-// 2. Create a Schema corresponding to the document interface.
 const BookingTicketSchema = new Schema<IBookingTicket>({
 	ticket_id: { type: String, required: true },
 	amount: { type: Number, required: true },
-	price: { type: Number, required: true },
+	price: { type: Number, required: true, enum: [TicketPrice.P150] },
 	datetime: { type: Date, required: true },
 })
 
-// 3. Create a Model.
-const BookingTicket = model<IBookingTicket>('BookingTicket', BookingTicketSchema);
+const BookingTicket = model<IBookingTicket>(DOCUMENT_NAME, BookingTicketSchema);
 
 export default BookingTicket;
