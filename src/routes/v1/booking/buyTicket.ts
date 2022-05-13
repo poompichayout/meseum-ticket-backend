@@ -10,7 +10,7 @@ import validator from '../../../helpers/validator';
 import schema from './schema';
 import asyncHandler from '../../../helpers/asyncHandler';
 import { getNextNum } from '../../../helpers/utils';
-import User from '../../../database/models/User';
+import User, { IUser } from '../../../database/models/User';
 
 const router = Router();
 
@@ -18,9 +18,8 @@ export default router.post(
   '/buy',
   validator(schema.ticket),
   asyncHandler(async (req: Request, res: Response) => {
-	const { date, hour, amount, pricePerTicket, payment_method, phone, email } = req.body;
+	const { date, amount, pricePerTicket, payment_method, phone, email } = req.body;
 	const formatDate = new Date(date);
-	formatDate.setUTCHours(hour);
 
 	const ticketCount = await BookingTicket.findOne({ datetime: formatDate }).lean<IBookingTicket>().count();
 	if (ticketCount >= 50) {
@@ -59,12 +58,13 @@ export default router.post(
 		payment_method
 	});
 
-	const user = await User.findOne({ email });
+	const user = await User.findOne({ email }).lean<IUser>();
 
 	await CreatePayment.create({
 		payment_id: payment._id,
 		ticket_id: ticket._id,
 		user: user?._id,
+		phone,
 	})
 	
     new SuccessResponse('Booking Success', {
