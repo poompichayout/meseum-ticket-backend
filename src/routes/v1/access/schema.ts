@@ -20,5 +20,6 @@ export default {
     email: Joi.string().required().email(),
     password: Joi.string().required().min(6),
     confirmPassword: Joi.any().valid(Joi.ref('password')).required().options({ errors: { language: "must match password" }}),
+    phone: Joi.string().length(10).pattern(/^[0-9]+$/)
   }),
 };

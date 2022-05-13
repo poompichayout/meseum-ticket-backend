@@ -10,16 +10,18 @@ export interface IBookingTicket {
 	_id: Types.ObjectId,
 	ticket_id: string;
 	amount: number;
-	price: TicketPrice;
+	pricePerTicket: TicketPrice;
 	datetime: Date;
+	createdAt?: Date;
+	updatedAt?: Date;
 }
 
 const BookingTicketSchema = new Schema<IBookingTicket>({
 	ticket_id: { type: String, required: true },
 	amount: { type: Number, required: true },
-	price: { type: Number, required: true, enum: [TicketPrice.P150] },
+	pricePerTicket: { type: Number, required: true, enum: [TicketPrice.P150] },
 	datetime: { type: Date, required: true },
-})
+}, { timestamps: true })
 
 const BookingTicket = model<IBookingTicket>(DOCUMENT_NAME, BookingTicketSchema);
 

@@ -12,6 +12,8 @@ export interface IPayment {
 	payment_id: string;
 	cost: number;
 	payment_method: PaymentMethod;
+	createdAt?: Date;
+	updatedAt?: Date;
 }
 
 const PaymentSchema = new Schema<IPayment>({
