@@ -1,16 +1,17 @@
 import { Request } from 'express';
 import { IUser } from '../database/models/User';
 
-declare interface RoleRequest extends Request {
-  currentRoleCode: string;
+declare global {
+  namespace Express {
+    // export interface Request {
+    //   userCode: IUser
+    // }
+    export interface User extends IUser {
+      
+    }
+  }
 }
 
-declare interface ProtectedRequest extends RoleRequest {
-  user: IUser;
-  accessToken: string;
-}
-
-declare interface Tokens {
-  accessToken: string;
-  refreshToken: string;
+declare interface ProtectedRequest extends Request {
+  //userCode: import('../database/models/User').IUser;
 }

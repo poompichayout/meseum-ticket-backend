@@ -20,7 +20,7 @@ router.post(
   '/basic',
   validator(schema.signup),
   asyncHandler(async (req: Request, res) => {
-    const { email, password, firstName, lastName, phone } = req.body
+    const { email, password, firstName, lastName, phone, roles } = req.body
 
 	const existingUser = await User.findOne({ email })
 
@@ -28,7 +28,7 @@ router.post(
 	
 	const hashedPassword = await bcrypt.hash(password, 12)
 
-	const role = await Role.findOne({ code: RoleCode.USER })
+	const role = await Role.findOne({ code: roles })
       .select('+email +password')
       .lean<IRole>()
       .exec();

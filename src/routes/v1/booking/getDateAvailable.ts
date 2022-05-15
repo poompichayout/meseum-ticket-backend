@@ -6,8 +6,12 @@ import { SuccessResponse } from '../../../core/ApiResponse';
 import asyncHandler from '../../../helpers/asyncHandler';
 import validator, { ValidationSource } from '../../../helpers/validator';
 import schema from './schema';
+// import { role, userAuth } from '../../../auth/authenticate';
+// import { RoleCode } from '../../../database/models/Role';
 
 const router = express.Router();
+
+// router.use('/', userAuth, role([ RoleCode.ADMIN ]));
 
 router.get(
 	'/date-status',

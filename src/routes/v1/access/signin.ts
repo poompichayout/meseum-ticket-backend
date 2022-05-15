@@ -37,7 +37,7 @@ export default router.post(
     if(!match) throw new AuthFailureError('Authentication failure');
 
     //If crednetials are valid, create a token for the user
-    const token = jwt.sign({ email: user.email, id: user._id }, SECRET, { expiresIn: "1h" })
+    const token = jwt.sign({ email: user.email, id: user._id, roles: user.roles }, SECRET, { expiresIn: "1h" })
     //Then send the token to the client/frontend
     new SuccessResponse('Login Success', {
       user: _.pick(user, ['_id', 'firstname', 'lastname', 'roles']),

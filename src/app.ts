@@ -1,5 +1,6 @@
 import express, { Application, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
+import passport from 'passport';
 import Logger from './core/Logger';
 import { corsUrl, environment } from './config';
 import './database'; // initialize database
@@ -18,6 +19,7 @@ app.use(express.json({ limit: '30mb' }));
 app.use(express.urlencoded({ limit: '30mb', extended: true, parameterLimit: 50000 }));
 app.use(cors({ origin: corsUrl, optionsSuccessStatus: 200 }));
 
+import './middleware/passport';
 
 // Routes
 app.use('/v1', routesV1);
