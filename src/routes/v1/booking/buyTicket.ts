@@ -63,7 +63,7 @@ export default router.post(
 	await CreatePayment.create({
 		payment_id: payment._id,
 		ticket_id: ticket._id,
-		user: user?._id,
+		user_id: user?._id,
 		phone,
 	})
 	
