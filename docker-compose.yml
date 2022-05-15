@@ -1,0 +1,49 @@
+# ไฟล์นี้สำหรับการ build production image
+version: '3.9'
+
+services:
+  nginx-proxy:
+    restart: always
+    build:
+      context: ./
+      dockerfile: ./nginx/Dockerfile.prod
+    volumes:
+      - /usr/src/ssl:/etc/nginx/ssl
+    ports:
+      - '80:80'
+      - '443:443'
+    environment:
+      - NGINX_LE_EMAIL # editable in .env
+      - NGINX_LE_FQDN # editable in .env
+      - NGINX_LE_LETSENCRYPT # change to false if don't want ssl cert or want to run on localhost
+      - NGINX_LE_PLACEHOLDER_1=${SERVER_PORT}
+      - NGINX_LE_PLACEHOLDER_2=${PUBLIC_IP_ADDRESS}
+      - NGINX_LE_TZ # editable in .env
+    depends_on:
+      - server
+
+  server:
+    restart: always
+    build: .
+    image: oasurastudio/museum-backend:latest
+    environment:
+      - NODE_ENV=production
+      - PORT=${SERVER_PORT}
+      - DB_CONNECTION=${DB_CONNECTION} # change to REMOTE_DB_CONNECTION for cloud database
+      - DB_URL=${DOCKER_DB}
+      - SECRET=${SECRET}
+    depends_on:
+      - mongo
+  
+  mongo:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_DATABASE=meseum
+    volumes:
+      - mongodata:/data/db
+volumes:
+  mongodata:

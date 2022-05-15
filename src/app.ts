@@ -22,7 +22,7 @@ app.use(cors({ origin: corsUrl, optionsSuccessStatus: 200 }));
 import './middleware/passport';
 
 // Routes
-app.use('/v1', routesV1);
+app.use('/api/v1', routesV1);
 app.use((req, res, next) => next(new NotFoundError()));
 
 // Middleware Error Handler

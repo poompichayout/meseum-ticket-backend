@@ -1,0 +1,11 @@
+node_modules
+logs
+build
+Dockerfile
+.dockerignore
+.git
+.gitignore
+Makefile
+.env.example
+.prettierrc
+README.*

@@ -1,0 +1,19 @@
+upstream node-app-cluster {
+  server server:NGINX_LE_PLACEHOLDER_2;
+}
+
+log_format dev '[$time_local] $request $status $request_time s - $body_bytes_sent';
+
+server {
+  listen NGINX_LE_PLACEHOLDER_3;
+
+  access_log /var/log/nginx/access.log dev;
+
+  proxy_set_header Host $host;
+  proxy_set_header X-Real-IP $remote_addr;
+
+
+  location /api {
+    proxy_pass http://node-app-cluster;
+  }
+}
