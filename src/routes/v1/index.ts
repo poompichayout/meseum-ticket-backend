@@ -4,6 +4,10 @@ import signup from './access/signup';
 import buyTicket from './booking/buyTicket';
 import getDateAvailable from './booking/getDateAvailable';
 import ticketList from './profile/ticketInfo';
+import statistics from './admin/statistics';
+import ticketPurchaseHistory from './admin/ticketPurchaseHistory';
+import getMuseumDate from './admin/getMuseumDate';
+import setMuseumDate from './admin/setMuseumDate';
 
 const router = express.Router();
 
@@ -16,5 +20,9 @@ router.use('/signup', signup);
 router.use('/booking', buyTicket);
 router.use('/booking', getDateAvailable);
 router.use('/profile', ticketList);
+router.use('/admin', statistics);
+router.use('/admin', ticketPurchaseHistory);
+router.use('/admin', getMuseumDate);
+router.use('/admin', setMuseumDate);
 
 export default router;
