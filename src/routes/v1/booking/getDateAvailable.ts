@@ -38,12 +38,12 @@ router.get(
 				
 		const formatAvailableDate = allDayStatus.map((date) => {
 			return {
-				date: new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0),
+				date: date,
 				time: [...Array(11).keys()].map((hour) => {
 					const validHour = hour + 10;
 					let isCloseHour: boolean = false, status: string = TimeStatus.CLOSED;
 					closeDateRange.forEach((x) => {
-						if (x.close_date.getHours() === validHour) {
+						if (x.close_date.getUTCHours() === validHour && x.close_date.getUTCDate() === date.getUTCDate()) {
 							isCloseHour = true;
 							status = x.status;
 						}

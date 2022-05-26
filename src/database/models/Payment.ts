@@ -4,7 +4,8 @@ export const DOCUMENT_NAME = 'Payment';
 
 export enum PaymentMethod {
 	VISA = 'Visa',
-	PROMPTPAY = 'Promptpay'
+	PROMPTPAY = 'Promptpay',
+	MOBILE_BANKING = 'Mobile Banking'
 }
 
 export interface IPayment {

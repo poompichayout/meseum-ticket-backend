@@ -35,7 +35,7 @@ router.post(
     if (!role) throw new InternalError('Role must be defined');
 
 	const result = await User.create({ email, password: hashedPassword, firstname: firstName, lastname: lastName, phone, roles: [role._id] })
-	const token = jwt.sign({ email: result.email, id: result._id }, SECRET, { expiresIn: "1h" })
+	const token = jwt.sign({ email: result.email, _id: result._id, roles: [{ code: roles }] }, SECRET, { expiresIn: "1h" })
 	
 	new SuccessResponse('Signup Successful', {
 		user: _.pick(result, ['_id', 'firstname', 'lastname', 'email', 'roles']),

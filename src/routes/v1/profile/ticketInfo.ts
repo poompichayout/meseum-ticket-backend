@@ -13,7 +13,7 @@ import { NoDataError } from '../../../core/ApiError';
 
 const router = express.Router();
 
-router.use('/', userAuth, role([ RoleCode.USER ]));
+router.use('/', userAuth, role([ RoleCode.USER, RoleCode.ADMIN ]));
 
 router.get(
 	'/tickets',

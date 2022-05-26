@@ -21,6 +21,8 @@ export default router.post(
 	const { date, amount, pricePerTicket, payment_method, phone, email } = req.body;
 	const formatDate = new Date(date);
 
+	// ต้องเช็คว่าวันที่ที่จองเข้ามา ไม่ซ้ำกับวันที่ปิด
+
 	const ticketCount = await BookingTicket.findOne({ datetime: formatDate }).lean<IBookingTicket>().count();
 	if (ticketCount >= 50) {
 		throw new InternalError("No more space for this time: " + formatDate);
