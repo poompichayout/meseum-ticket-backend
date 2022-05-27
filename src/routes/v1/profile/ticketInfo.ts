@@ -51,19 +51,20 @@ router.get(
 		const { ticket_id } = req.params;
 
 		const ticketData = await CreatePayment
-			.findOne({ user_id: _id })
+			.find({ user_id: _id })
 			.populate({ path: 'ticket_id', match: { ticket_id }})
-			.lean<ICreatePayment>();
-		if (!ticketData.ticket_id) throw new NoDataError("Can not find any data for this ticket_id on your list");
+			.lean<ICreatePayment[]>();
+		
+		if (!ticketData.some(e => typeof e.ticket_id === 'object')) throw new NoDataError("Can not find any data for this ticket_id on your list");
 
-		const serializeTicket = _.pick(ticketData, [
+		const firstFoundTicket = _.find(ticketData, (e) => e.ticket_id !== null);
+		const serializeTicket = _.pick(firstFoundTicket, [
 				'ticket_id.ticket_id', 
 				'ticket_id.ticket_name', 
 				'ticket_id.amount', 
 				'ticket_id.pricePerTicket', 
 				'ticket_id.datetime']
 			).ticket_id;
-		
 		return new SuccessResponse('success', {
 			ticket: serializeTicket
 		}).send(res);

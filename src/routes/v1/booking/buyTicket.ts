@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import _ from 'lodash';
+import nodemailer from 'nodemailer';
 
 import BookingTicket, { IBookingTicket } from '../../../database/models/BookingTicket';
 import CreatePayment from '../../../database/models/CreatePayment';
@@ -11,6 +12,8 @@ import schema from './schema';
 import asyncHandler from '../../../helpers/asyncHandler';
 import { getNextNum } from '../../../helpers/utils';
 import User, { IUser } from '../../../database/models/User';
+import { smtp_email, smtp_pass } from '../../../config';
+import moment from 'moment';
 
 const router = Router();
 
@@ -68,6 +71,34 @@ export default router.post(
 		user_id: user?._id,
 		phone,
 	})
+
+	const transporter = nodemailer.createTransport({
+		service: 'gmail',
+		auth: {
+			user: smtp_email, // your email
+			pass: smtp_pass // your email password
+		}
+	});
+
+	let mailOptions = {
+		from: smtp_email,                // sender
+		to: email,                // list of receivers
+		subject: 'Museum - Thank you for booking with us ' + latestTicketID,              // Mail subject
+		html: `
+			<div>Thank you for booking with us</div>
+			<div><b>Ticket ID:</b> ${latestTicketID}</div>
+			<div><b>Ticket Type:</b> ${ticket.ticket_name}</div>
+			<div><b>Date:</b> ${moment(ticket.datetime).format('DD-MMM-YYYY')}</div>
+			<div><b>Time:</b> ${moment(ticket.datetime).format('HH:mm')}</div>
+			<div><b>Total Price:</b> ${ticket.pricePerTicket * ticket.amount}</div>
+			<div><b>Amount:</b> ${ticket.amount}</div>
+		`
+	};
+
+	transporter.sendMail(mailOptions, function (err, info) {
+		if(err)
+		  console.log(err)
+	 });
 	
     new SuccessResponse('Booking Success', {
       ticket: _.pick(ticket, ['ticket_id', 'amount', 'pricePerTicket', 'datetime']),

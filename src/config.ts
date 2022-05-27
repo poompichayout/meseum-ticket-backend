@@ -26,3 +26,6 @@ export const tokenInfo = {
 };
 
 export const logDirectory = process.env.LOG_DIR;
+
+export const smtp_email = process.env.EMAIL;
+export const smtp_pass = process.env.EMAIL_PASSWORD;
